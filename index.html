@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CBE E-Learning Resources</title>
+    <meta name="description" content="CBE E-Learning Resources for Grades 1-12: notes, schemes of work, lesson plans, records of work, assessment tests, topical questions, holiday workbooks, KNEC rubrics, assignments, novels, and bookshop resources.">
+    <meta name="keywords" content="CBE resources, CBC resources Kenya, Grade 1 notes, Grade 12 notes, schemes of work, lesson plans, records of work, assessment tests, topical questions, holiday workbooks, KNEC rubrics, assignments, Kenya e-learning">
+    <meta name="author" content="CBE E-Learning Resources">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://example.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="CBE E-Learning Resources for Grades 1-12">
+    <meta property="og:description" content="Professional CBE teaching and learning materials, including notes, schemes of work, lesson plans, assessments, topical questions, KNEC rubrics, assignments, novels, and bookshop resources.">
+    <meta property="og:image" content="assets/cbe-classroom.svg">
+    <meta property="og:url" content="https://example.com/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CBE E-Learning Resources">
+    <meta name="twitter:description" content="CBE resources for Grades 1-12 with M-Pesa and WhatsApp order support.">
+    <meta name="twitter:image" content="assets/cbe-classroom.svg">
+    <link rel="stylesheet" href="styles.css">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "CBE E-Learning Resources",
+        "description": "Professional CBE teaching and learning resources for Grades 1-12 in Kenya.",
+        "url": "https://example.com/",
+        "areaServed": "Kenya",
+        "telephone": "+254xxx",
+        "sameAs": [
+          "https://wa.me/254xxx"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "CBE Teaching and Learning Materials",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "CreativeWork", "name": "CBE Notes" } },
+            { "@type": "Offer", "itemOffered": { "@type": "CreativeWork", "name": "Schemes of Work" } },
+            { "@type": "Offer", "itemOffered": { "@type": "CreativeWork", "name": "Lesson Plans" } },
+            { "@type": "Offer", "itemOffered": { "@type": "CreativeWork", "name": "Assessment Tests" } },
+            { "@type": "Offer", "itemOffered": { "@type": "CreativeWork", "name": "Topical Questions" } },
+            { "@type": "Offer", "itemOffered": { "@type": "CreativeWork", "name": "Holiday Workbooks" } },
+            { "@type": "Offer", "itemOffered": { "@type": "CreativeWork", "name": "KNEC Rubrics" } }
+          ]
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="brand" href="/" aria-label="CBE E-Learning home">
+          <span class="brand-mark">CBE</span>
+          <span>
+            <strong>E-Learning Resources</strong>
+            <small>Professional teaching and learning materials</small>
+          </span>
+        </a>
+        <div class="nav-actions">
+          <button class="menu-toggle" id="mobileMenuButton" type="button" aria-controls="mobileResourceMenu" aria-expanded="false">Menu</button>
+          <a class="danger-blink-button" href="#holidayTuition">Book Holiday Tuition</a>
+          <button class="cart-button" id="cartButton" type="button">Cart <span id="cartCount">0</span></button>
+          <a class="primary-button" href="#referFriend">Refer Friend</a>
+        </div>
+      </nav>
+
+      <div class="resource-menu" id="mobileResourceMenu">
+        <a href="#resources" data-material-link="Notes">Notes</a>
+        <a href="#resources" data-material-link="Schemes of Work">Schemes</a>
+        <a href="#resources" data-material-link="Lesson Plan">Lesson Plans</a>
+        <a href="#resources" data-material-link="Records of Work">Records</a>
+        <a href="#resources" data-material-link="Assessment Test">Assessments</a>
+        <a href="#resources" data-material-link="Topical Questions">Topical Qs</a>
+        <a href="#resources" data-material-link="Holiday Workbooks">Workbooks</a>
+        <a href="#resources" data-material-link="Past Papers">Past Papers</a>
+        <a href="#cbcProjects">CBC Projects</a>
+        <a href="#freeCbcResources">Free CBC</a>
+        <a href="#quizCentre">Quizzes</a>
+        <a href="#aiHomework">AI Helper</a>
+      </div>
+
+      <div class="top-strip">
+        <a href="#resources">Resources</a>
+        <a href="#holidayTuition">Tuition</a>
+        <a href="#contact">Contact</a>
+        <a href="#about">About</a>
+        <a href="#privacy">Privacy</a>
+      </div>
+    </header>
+
+    <div class="app-compat" hidden>
+      <span id="statResources">0</span>
+      <div id="gradeList"></div>
+      <a id="headerMpesaButton" href="#payments">M-Pesa</a>
+      <button id="openSellerDashboardButton" type="button">Seller Dashboard</button>
+      <select id="termFilter"><option>All Terms</option></select>
+      <select id="accessFilter"><option>All Access</option></select>
+      <select id="sortFilter"><option>Latest</option></select>
+      <input id="searchFilter">
+      <section id="payments">
+        <form id="paymentForm">
+          <input id="customerPhoneInput">
+          <input id="amountInput" value="150">
+          <input id="selectedResourceInput">
+          <a id="whatsappOrderButton" href="#contact">WhatsApp</a>
+          <p id="paymentStatus"></p>
+        </form>
+        <div id="paymentRecordsList"></div>
+      </section>
+      <section id="freeCbcResources"></section>
+      <form id="projectUploadForm">
+        <input id="projectTitleInput">
+        <select id="projectGradeInput"></select>
+        <input id="projectSubjectInput">
+        <input id="projectFileInput" type="file">
+        <textarea id="projectNotesInput"></textarea>
+        <p id="projectStatus"></p>
+      </form>
+      <form id="homeworkForm">
+        <select id="homeworkGradeInput"></select>
+        <input id="homeworkSubjectInput">
+        <textarea id="homeworkQuestionInput"></textarea>
+      </form>
+      <div id="homeworkAnswer"></div>
+      <div id="downloadApprovalList"></div>
+    </div>
+
+    <main>
+      <section class="trust-band" aria-label="Trust and support">
+        <div class="trust-grid">
+          <article>
+            <strong>Trusted CBE Marketplace</strong>
+            <span>Admin-reviewed resources before public selling.</span>
+          </article>
+          <article>
+            <strong>Free Samples</strong>
+            <span>Preview selected materials before ordering.</span>
+          </article>
+          <article>
+            <strong>Replacement Support</strong>
+            <span>WhatsApp support if a paid material needs correction.</span>
+          </article>
+          <article>
+            <strong>Seller Earnings</strong>
+            <span>Approved sellers track 50% commission requests.</span>
+          </article>
+        </div>
+      </section>
+
+      <section id="resources" class="content-band">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Teaching and learning materials</p>
+            <h2>Browse Resources by Grade & Subject</h2>
+          </div>
+        </div>
+
+        <div class="filters" aria-label="Resource filters" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+          <label>
+            Grade
+            <select id="gradeFilter">
+              <option value="">All Grades</option>
+            </select>
+          </label>
+          <label>
+            Subject
+            <select id="subjectFilter">
+              <option value="">All Subjects</option>
+            </select>
+          </label>
+          <label>
+            Material Type
+            <select id="typeFilter">
+              <option value="">All Materials</option>
+              <option value="Notes">Notes</option>
+              <option value="Schemes of Work">Schemes of Work</option>
+              <option value="Lesson Plan">Lesson Plans</option>
+              <option value="Records of Work">Records of Work</option>
+              <option value="Assessment Test">Assessment Tests</option>
+              <option value="Topical Questions">Topical Questions</option>
+              <option value="Holiday Workbooks">Holiday Workbooks</option>
+              <option value="Past Papers">Past Papers</option>
+              <option value="Projects">CBC Projects</option>
+              <option value="Study Guides">Study Guides</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="activeContext" class="active-context" aria-live="polite" style="margin-bottom: 1rem; font-weight: bold;"></div>
+        <div id="resourceGrid" class="resource-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;"></div>
+      </section>
+
+      <section class="trust-band" aria-label="Trust and support">
+        <div class="promo-layout">
+          <div>
+            <p class="eyebrow">Creator program</p>
+            <h2>Sell CBE resources and earn 50%</h2>
+            <p>Teachers, tutors, and content creators must create a seller account first. Admin approval is completed within 24 hours.</p>
+          </div>
+          <button class="whatsapp-button" id="openSellerDashboardButtonSecondary" type="button">Open Seller Dashboard</button>
+        </div>
+      </section>
+
+      <section id="sellerAccount" class="seller-band hidden-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Seller account</p>
+            <h2>Create or login to seller account</h2>
+          </div>
+          <div class="price-pill">Approval time: <strong>24 hours</strong></div>
+        </div>
+        <div class="seller-layout">
+          <form id="sellerAccountForm" class="admin-form">
+            <div class="form-row">
+              <label>
+                Full Name
+                <input id="sellerAccountNameInput" required placeholder="Seller full name">
+              </label>
+              <label>
+                Phone Number
+                <input id="sellerAccountPhoneInput" required placeholder="07XXXXXXXX">
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                Username
+                <input id="sellerAccountUsernameInput" required placeholder="Create username">
+              </label>
+              <label>
+                Password
+                <input id="sellerAccountPasswordInput" type="password" required placeholder="Create password">
+              </label>
+            </div>
+            <button class="primary-button" type="submit">Create Seller Account</button>
+            <p id="sellerAccountStatus" class="form-status" aria-live="polite"></p>
+          </form>
+
+          <form id="sellerLoginForm" class="admin-form">
+            <label>
+              Username
+              <input id="sellerLoginUsernameInput" required placeholder="Seller username">
+            </label>
+            <label>
+              Password
+              <input id="sellerLoginPasswordInput" type="password" required placeholder="Seller password">
+            </label>
+            <button class="secondary-button" type="submit">Login as Seller</button>
+            <p id="sellerLoginStatus" class="form-status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <section id="sellerDashboard" class="seller-band hidden-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Third-party seller dashboard</p>
+            <h2>Upload resources for selling</h2>
+            <p class="seller-approval-copy">Only approved seller accounts can upload. Submitted work is reviewed by the admin and approved within 3 days.</p>
+          </div>
+          <div class="price-pill">Seller commission: <strong>50%</strong></div>
+        </div>
+        <div class="seller-layout">
+          <form id="sellerForm" class="admin-form">
+            <div class="form-row">
+              <label>
+                Seller Name
+                <input id="sellerNameInput" required placeholder="Teacher or publisher name">
+              </label>
+              <label>
+                Seller Phone
+                <input id="sellerPhoneInput" required placeholder="07XXXXXXXX">
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                Resource Title
+                <input id="sellerTitleInput" required placeholder="Grade 8 Integrated Science Notes">
+              </label>
+              <label>
+                Price
+                <input id="sellerPriceInput" type="number" min="0" required placeholder="Enter custom price">
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                Grade
+                <select id="sellerGradeInput" required></select>
+              </label>
+              <label>
+                Subject
+                <select id="sellerSubjectInput" required></select>
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                Material Type
+                <select id="sellerTypeInput" required></select>
+              </label>
+              <label>
+                Discount Percentage
+                <input id="sellerDiscountInput" type="number" min="0" max="100" value="0" required>
+              </label>
+            </div>
+            <label>
+              Description
+              <textarea id="sellerDescriptionInput" required rows="4" placeholder="Describe the resource, term, strand, answers, and learner level."></textarea>
+            </label>
+            <label>
+              Upload Seller Resource
+              <input id="sellerFileInput" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.zip" required>
+            </label>
+            <button class="primary-button submit-button" type="submit">Submit Seller Resource</button>
+            <p id="sellerStatus" class="form-status" aria-live="polite"></p>
+          </form>
+
+          <aside class="seller-panel">
+            <h3>Seller resource list</h3>
+            <p>Seller uploads stay pending until the admin approves them. Approval is completed within 3 days.</p>
+            <div id="sellerResourceList" class="seller-resource-list"></div>
+            <div class="seller-earnings">
+              <h3>Seller earnings</h3>
+              <strong id="sellerEarningsTotal">KES 0</strong>
+              <form id="withdrawForm" class="withdraw-form">
+                <input id="withdrawPhoneInput" placeholder="Withdrawal M-Pesa phone">
+                <button class="secondary-button" type="submit">Request Withdrawal</button>
+              </form>
+              <p id="withdrawStatus" class="form-status" aria-live="polite"></p>
+            </div>
+            <div class="seller-storage">
+              <h3>Seller storage</h3>
+              <p id="sellerStorageInfo">Seller storage usage: 0 B of 20 GB available.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="referFriend" class="promo-band refer-band">
+        <div class="promo-layout">
+          <div>
+            <p class="eyebrow">Referral reward</p>
+            <h2>Refer a friend and unlock one CBE paper free</h2>
+            <p>Enter your friend's details below. After recording the referral, one free resource access button is unlocked for testing.</p>
+          </div>
+          <form id="referForm" class="refer-form">
+            <input id="friendNameInput" required placeholder="Friend's name">
+            <input id="friendPhoneInput" required placeholder="Friend's phone number">
+            <button class="primary-button" type="submit">Unlock Free Paper</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="holidayTuition" class="urgent-band">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Learners holiday program</p>
+            <h2>Book Holiday Tuition</h2>
+            <p>Register a learner for holiday tuition and receive free CBC starter resources after registration.</p>
+          </div>
+          <a class="danger-blink-button large" href="#tuitionForm">Register Now</a>
+        </div>
+        <form id="tuitionForm" class="admin-form feature-form">
+          <div class="form-row">
+            <label>
+              Learner Name
+              <input id="tuitionLearnerInput" required placeholder="Learner full name">
+            </label>
+            <label>
+              Parent Phone
+              <input id="tuitionPhoneInput" required placeholder="07XXXXXXXX">
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              Grade
+              <select id="tuitionGradeInput"></select>
+            </label>
+            <label>
+              Preferred Subjects
+              <input id="tuitionSubjectsInput" required placeholder="Mathematics, English, Science">
+            </label>
+          </div>
+          <button class="danger-blink-button" type="submit">Register for Holiday Tuition</button>
+          <p id="tuitionStatus" class="form-status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section id="quizCentre" class="info-band">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Automated assessment</p>
+            <h2>Marked Quizzes and Progress Report</h2>
+            <p>Complete the quiz, get instant marking, and view learner progress below.</p>
+          </div>
+        </div>
+        <form id="quizForm" class="quiz-panel">
+          <label>
+            Learner Name
+            <input id="quizLearnerInput" required placeholder="Learner name">
+          </label>
+          <fieldset>
+            <legend>1. Which learning design does CBC emphasize?</legend>
+            <label><input type="radio" name="q1" value="competency" required> Competency and skill development</label>
+            <label><input type="radio" name="q1" value="memorization"> Memorization only</label>
+          </fieldset>
+          <fieldset>
+            <legend>2. A project rubric is mainly used to:</legend>
+            <label><input type="radio" name="q2" value="assessment" required> Assess performance against clear criteria</label>
+            <label><input type="radio" name="q2" value="decoration"> Decorate the learner workbook</label>
+          </fieldset>
+          <fieldset>
+            <legend>3. Topical questions help learners revise:</legend>
+            <label><input type="radio" name="q3" value="specific" required> Specific strands and sub-strands</label>
+            <label><input type="radio" name="q3" value="random"> Unrelated content only</label>
+          </fieldset>
+          <button class="primary-button" type="submit">Mark Quiz</button>
+          <p id="quizStatus" class="form-status" aria-live="polite"></p>
+        </form>
+        <div class="progress-panel">
+          <h3>Progress Report</h3>
+          <div id="progressReport"></div>
+        </div>
+      </section>
+
+      <section class="page-directory info-band info-band-light" aria-label="Website pages">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">10 page website</p>
+            <h2>Website Pages</h2>
+          </div>
+        </div>
+        <div class="download-grid">
+          <a class="download-tile" href="index.html">1. Home</a>
+          <a class="download-tile" href="resources.html">2. Resources</a>
+          <a class="download-tile" href="projects.html">3. CBC Projects</a>
+          <a class="download-tile" href="tuition.html">4. Holiday Tuition</a>
+          <a class="download-tile" href="free-resources.html">5. Free CBC Resources</a>
+          <a class="download-tile" href="quizzes.html">6. Marked Quizzes</a>
+          <a class="download-tile" href="progress.html">7. Progress Reports</a>
+          <a class="download-tile" href="homework-helper.html">8. AI Homework Helper</a>
+          <a class="download-tile" href="upload.html">9. Upload Centre</a>
+          <a class="download-tile" href="contact.html">10. Contact</a>
+        </div>
+      </section>
+
+      <section class="competitive-band" aria-label="Fast resource discovery">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Find what you need fast</p>
+            <h2>Competitive CBE resource centre</h2>
+          </div>
+          <div class="price-pill">WhatsApp support: <strong>***</strong></div>
+        </div>
+        <div class="feature-grid">
+          <article>
+            <strong>Fast Search</strong>
+            <span>Search by grade, subject, term, resource type, or keyword.</span>
+          </article>
+          <article>
+            <strong>Cart Orders</strong>
+            <span>Add several resources and send one WhatsApp order.</span>
+          </article>
+          <article>
+            <strong>CBE Aligned</strong>
+            <span>Organized by Grades 1-12 and official subject groupings.</span>
+          </article>
+          <article>
+            <strong>Instant M-Pesa</strong>
+            <span>Prepare payment details and confirm by WhatsApp.</span>
+          </article>
+        </div>
+        <div class="quick-types" id="quickTypes" aria-label="Quick resource type buttons"></div>
+        <div class="trending-panel">
+          <div>
+            <p class="eyebrow">Trending this week</p>
+            <h3>Popular CBE resources</h3>
+          </div>
+          <div id="trendingList" class="trending-list"></div>
+        </div>
+      </section>
+
+      <section class="seo-band" aria-label="CBE resource topics">
+        <h2>CBE Teaching and Learning Resources in Kenya</h2>
+        <p>
+          Find CBE resources for Grades 1-12, including notes, schemes of work, lesson plans,
+          records of work, assessment tests, topical questions, holiday workbooks, assignments,
+          KNEC rubrics, novels, motivational books, business books, and bookshop learning materials.
+        </p>
+      </section>
+
+      <section class="landing-band" aria-label="Popular CBE landing pages">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">SEO landing pages</p>
+            <h2>Popular searches</h2>
+          </div>
+        </div>
+        <div class="landing-grid">
+          <button data-landing-search="Grade 7 Mathematics Notes">Grade 7 Mathematics Notes</button>
+          <button data-landing-search="Grade 10 Biology Exams">Grade 10 Biology Exams</button>
+          <button data-landing-search="CBC Schemes of Work">CBC Schemes of Work</button>
+          <button data-landing-search="KNEC Rubrics">KNEC Rubrics</button>
+          <button data-landing-search="Holiday Assignments Kenya">Holiday Assignments Kenya</button>
+          <button data-landing-search="Topical Questions with Answers">Topical Questions with Answers</button>
+        </div>
+      </section>
+
+      <section id="adminLogin" class="admin-login-band hidden-section" aria-hidden="true">
+        <div class="admin-login-card">
+          <div>
+            <p class="eyebrow">Secure admin access</p>
+            <h2>Admin Login</h2>
+            <p>Enter the official admin email, username, and password to manage CBE resources and seller approvals. Official email: ***@gmail.com</p>
+          </div>
+          <form id="adminLoginForm" class="admin-login-form">
+            <label>
+              Email
+              <input id="adminEmailInput" type="email" autocomplete="email" required placeholder="***@gmail.com">
+            </label>
+            <label>
+              Username
+              <input id="adminUsernameInput" autocomplete="username" required placeholder="Username">
+            </label>
+            <label>
+              Password
+              <input id="adminPasswordInput" type="password" autocomplete="current-password" required placeholder="Password">
+            </label>
+            <button class="primary-button" type="submit">Unlock Admin Dashboard</button>
+            <p id="adminLoginStatus" class="form-status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <section id="admin" class="admin-band hidden-section" aria-hidden="true">
+        <div class="admin-layout">
+          <div class="admin-copy">
+            <p class="eyebrow">Admin dashboard</p>
+            <h2>Upload and publish learning materials</h2>
+            <p>
+              Add the subject, description, price, discount, and CBE resource file details.
+              Uploaded entries are saved in this browser and appear instantly in the library.
+            </p>
+            <div class="admin-note">
+              Use one standard price for all materials, then apply a discount percentage where needed.
+            </div>
+            <div class="admin-note">
+              Seller uploads appear here for approval. Approved work becomes visible in the public CBE Resources library.
+            </div>
+          </div>
+
+          <form id="resourceForm" class="admin-form">
+            <div class="form-row">
+              <label>
+                Resource Title
+                <input id="titleInput" required placeholder="Grade 7 Mathematics Topical Questions">
+              </label>
+              <label>
+                Grade
+                <select id="adminGradeInput" required></select>
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                Subject Name
+                <select id="adminSubjectInput" required></select>
+              </label>
+              <label>
+                Material Type
+                <select id="adminTypeInput" required></select>
+              </label>
+            </div>
+            <label>
+              Description
+              <textarea id="descriptionInput" required rows="4" placeholder="Briefly describe the content, term, strand, or assessment coverage."></textarea>
+            </label>
+            <div class="form-row">
+              <label>
+                Term
+                <select id="termInput">
+                  <option>Term 1</option>
+                  <option>Term 2</option>
+                  <option>Term 3</option>
+                </select>
+              </label>
+              <label>
+                Free Sample
+                <select id="freeSampleInput">
+                  <option value="false">No</option>
+                  <option value="true">Yes</option>
+                </select>
+              </label>
+            </div>
+            <label>
+              Add Notes for Testing
+              <textarea id="notesContentInput" rows="6" placeholder="Type sample notes here to test adding CBE content without uploading a file."></textarea>
+            </label>
+            <div class="form-row">
+              <label>
+                Price
+                <input id="priceInput" type="number" min="0" required placeholder="Enter price">
+              </label>
+              <label>
+                Discount Percentage
+                <input id="discountInput" type="number" min="0" max="100" value="0" required>
+              </label>
+            </div>
+            <label>
+              CBE Resource File Name
+              <input id="fileNameInput" placeholder="grade-7-mathematics-topical-questions.pdf">
+            </label>
+            <label class="file-upload-box">
+              Upload Resource File
+              <input id="fileInput" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.zip">
+              <span id="fileHelp">Choose a PDF, Word document, PowerPoint, Excel file, text file, or ZIP.</span>
+            </label>
+            <button class="primary-button submit-button" type="submit">Publish Resource</button>
+            <p id="formStatus" class="form-status" aria-live="polite"></p>
+          </form>
+        </div>
+        <div class="admin-approval-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Seller accounts</p>
+              <h2>Pending seller account approvals</h2>
+            </div>
+          </div>
+          <div id="sellerAccountApprovalList" class="approval-list"></div>
+        </div>
+        <div class="admin-approval-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Admin approval</p>
+              <h2>Pending seller resources</h2>
+            </div>
+          </div>
+          <div id="adminApprovalList" class="approval-list"></div>
+        </div>
+      </section>
+
+      <section id="about" class="info-band">
+        <div class="info-layout">
+          <div>
+            <p class="eyebrow">About us</p>
+            <h2>About CBE E-Learning Resources</h2>
+            <p>
+              CBE E-Learning Resources supports learners, teachers, parents, and schools with
+              easy-to-find Competency Based Education materials for Grades 1-12.
+            </p>
+            <p>
+              The platform brings together notes, schemes of work, lesson plans, records of work,
+              assessments, topical questions, holiday assignments, KNEC rubrics, novels, and bookshop
+              materials in one simple marketplace.
+            </p>
+          </div>
+          <div class="info-card">
+            <h3>Preview</h3>
+            <p>
+              Browse by grade, choose a subject, preview available resources, add materials to cart,
+              and confirm orders through M-Pesa or WhatsApp support.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="info-band info-band-light">
+        <div class="info-layout">
+          <div>
+            <p class="eyebrow">Contact page</p>
+            <h2>Contact CBE Nexus</h2>
+            <p>For resource orders, seller support, corrections, and general enquiries, reach us directly.</p>
+          </div>
+          <div class="contact-actions" aria-label="Contact details">
+            <a class="contact-link" href="mailto:cbenexus@gmail.com">cbenexus@gmail.com</a>
+            <a class="contact-link" href="tel:***">***</a>
+            <a class="whatsapp-button" href="https://wa.me/254xxx" target="_blank" rel="noopener">WhatsApp Support</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="privacy" class="info-band">
+        <div class="info-layout">
+          <div>
+            <p class="eyebrow">Privacy policy</p>
+            <h2>Privacy Policy</h2>
+            <p>
+              We collect only the information needed to process resource requests, payments, seller
+              submissions, support messages, and account approvals.
+            </p>
+            <p>
+              Contact details and order information are used for service delivery and support. We do
+              not sell personal information. Payment confirmations should only be shared through the
+              official contact channels listed on this website.
+            </p>
+          </div>
+          <div class="info-card">
+            <h3>Your choices</h3>
+            <p>
+              You can request correction or removal of your submitted contact or seller details by
+              emailing cbenexus@gmail.com.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <strong>CBE E-Learning Resources</strong>
+        <span>Linked grade, subject, admin, payment, and CBE resource dashboards</span>
+      </div>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="#about">About Us</a>
+        <a href="#contact">Contact</a>
+        <a href="#privacy">Privacy Policy</a>
+        <button class="ghost-button" id="adminAreaButton" type="button" style="padding: 0; background: none; border: none; cursor: pointer; color: inherit; text-decoration: underline; font: inherit;">Admin Area</button>
+      </nav>
+      <p style="margin-top: 1rem; font-size: 0.85rem; opacity: 0.8;">&copy; 2026 CBE E-Learning Resources. All rights reserved.</p>
+    </footer>
+
+    <nav class="mobile-bottom-nav" aria-label="Mobile quick navigation">
+      <a href="#resources">Resources</a>
+      <a href="#freeCbcResources">Free CBC</a>
+      <a href="#holidayTuition">Tuition</a>
+      <button id="mobileCartButton" type="button">Cart</button>
+    </nav>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <aside id="cartDrawer" class="cart-drawer" aria-label="Resource cart" aria-hidden="true">
+      <div class="cart-header">
+        <h2>Resource Cart</h2>
+        <button id="closeCartButton" class="secondary-button" type="button">Close</button>
+      </div>
+      <div id="cartItems" class="cart-items"></div>
+      <div class="cart-footer">
+        <strong id="cartTotal">KES 0</strong>
+        <a id="cartWhatsappButton" class="whatsapp-button" href="https://wa.me/254xxx" target="_blank" rel="noopener">Send WhatsApp Order</a>
+      </div>
+    </aside>
+    <script>
+      (() => {
+        const header = document.querySelector(".site-header");
+        const menuButton = document.querySelector("#mobileMenuButton");
+        const resourceMenu = document.querySelector("#mobileResourceMenu");
+        const cartButton = document.querySelector("#cartButton");
+        const mobileCartButton = document.querySelector("#mobileCartButton");
+
+        if (menuButton && header && resourceMenu) {
+          menuButton.addEventListener("click", () => {
+            const isOpen = header.classList.toggle("menu-open");
+            menuButton.setAttribute("aria-expanded", String(isOpen));
+          });
+
+          resourceMenu.addEventListener("click", (event) => {
+            if (event.target.closest("a")) {
+              header.classList.remove("menu-open");
+              menuButton.setAttribute("aria-expanded", "false");
+            }
+          });
+        }
+
+        if (mobileCartButton && cartButton) {
+          mobileCartButton.addEventListener("click", () => cartButton.click());
+        }
+      })();
+    </script>
+    <script src="app.js"></script>
+  </body>
+</html>
