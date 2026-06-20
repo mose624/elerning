@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin — Manage Assessments | CBE E-Learning</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      /* ── Admin assessment page styles ── */
+      .admin-page-header {
+        padding: 28px clamp(16px, 4vw, 48px);
+        background: var(--navy);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .admin-page-header h1 { margin: 0; font-size: clamp(20px, 3vw, 30px); }
+      .admin-page-header p  { margin: 4px 0 0; opacity: .78; font-size: 13px; }
+
+      .admin-main {
+        display: grid;
+        grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
+        gap: 24px;
+        padding: 28px clamp(16px, 4vw, 48px);
+        align-items: start;
+      }
+
+      .panel {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        box-shadow: 0 4px 16px rgba(18,52,71,.07);
+        overflow: hidden;
+      }
+      .panel-head {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--line);
+        background: #f4f8f9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .panel-head h2 { margin: 0; font-size: 17px; color: var(--navy); }
+      .panel-body { padding: 20px; }
+
+      /* Assessment list */
+      .assessment-list { display: grid; gap: 12px; }
+      .assessment-item {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        background: #fbfdfd;
+      }
+      .assessment-item h3 { margin: 0 0 6px; font-size: 15px; color: var(--navy); }
+      .assessment-item-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+      .badge {
+        border-radius: 5px;
+        padding: 3px 8px;
+        font-size: 11px;
+        font-weight: 800;
+      }
+      .badge-grade   { background: #e8f7ff; color: #0b5c7a; }
+      .badge-subject { background: #edf9ef; color: #21643c; }
+      .badge-count   { background: #f3edff; color: #54358a; }
+      .badge-attempts{ background: #fff3dc; color: #8a520c; }
+      .item-actions  { display: flex; flex-wrap: wrap; gap: 8px; }
+
+      /* Question builder */
+      .question-builder {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 16px;
+        background: #f9fbfb;
+        margin-bottom: 14px;
+      }
+      .question-builder h4 { margin: 0 0 12px; font-size: 14px; color: var(--navy); }
+      .options-2col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .correct-select {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+        align-items: center;
+        margin-top: 10px;
+      }
+      .correct-select label { color: var(--navy); font-weight: 800; font-size: 13px; }
+
+      /* Stats panel */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .stat-box {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        text-align: center;
+        background: #fbfdfd;
+      }
+      .stat-box strong { display: block; font-size: 26px; color: var(--navy); }
+      .stat-box span   { font-size: 11px; color: var(--muted); font-weight: 700; }
+
+      /* Login gate */
+      .login-gate {
+        max-width: 420px;
+        margin: 60px auto;
+        padding: 28px;
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+      }
+      .login-gate h2 { margin: 0 0 6px; color: var(--navy); }
+      .login-gate p  { margin: 0 0 18px; color: var(--muted); font-size: 13px; }
+
+      .hidden { display: none !important; }
+
+      @media (max-width: 900px) {
+        .admin-main { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 640px) {
+        .admin-main { padding: 14px 12px; gap: 14px; }
+        .options-2col { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="brand" href="/" aria-label="CBE E-Learning home">
+          <span class="brand-mark">CBE</span>
+          <span>
+            <strong>E-Learning Resources</strong>
+            <small>Admin — Assessments</small>
+          </span>
+        </a>
+        <div class="nav-actions">
+          <a class="ghost-button" href="/">← Home</a>
+          <a class="ghost-button" href="assessments.html">Student View</a>
+          <button class="secondary-button" id="logoutBtn" type="button">Logout</button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Login gate (shown when not authenticated) -->
+    <div id="loginGate" class="login-gate">
+      <p class="eyebrow">Admin access required</p>
+      <h2>Admin Login</h2>
+      <p>Enter your admin credentials to manage assessments.</p>
+      <form id="loginForm" class="admin-login-form">
+        <label>
+          Email
+          <input id="loginEmail" type="email" required placeholder="admin@gmail.com" autocomplete="email">
+        </label>
+        <label>
+          Username
+          <input id="loginUsername" required placeholder="Username" autocomplete="username">
+        </label>
+        <label>
+          Password
+          <input id="loginPassword" type="password" required placeholder="Password" autocomplete="current-password">
+        </label>
+        <button class="primary-button" type="submit">Login</button>
+        <p id="loginStatus" class="form-status" aria-live="polite"></p>
+      </form>
+    </div>
+
+    <!-- Admin dashboard (hidden until authenticated) -->
+    <div id="adminDashboard" class="hidden">
+      <div class="admin-page-header">
+        <div>
+          <h1>Assessment Manager</h1>
+          <p>Create assessments, add questions, and monitor student performance.</p>
+        </div>
+        <a class="primary-button" href="assessments.html" target="_blank">Preview Student View ↗</a>
+      </div>
+
+      <div class="admin-main">
+        <!-- Left column: create + list -->
+        <div style="display:grid;gap:20px;">
+
+          <!-- Create Assessment -->
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Create New Assessment</h2>
+            </div>
+            <div class="panel-body">
+              <form id="createAssessmentForm" class="admin-form" style="padding:0;box-shadow:none;border:none;background:transparent;">
+                <label>
+                  Assessment Title
+                  <input id="aTitle" required placeholder="e.g. Grade 7 Mathematics Term 1 Assessment">
+                </label>
+                <div class="form-row">
+                  <label>
+                    Grade
+                    <select id="aGrade" required>
+                      <option value="">Select grade…</option>
+                      <option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+                      <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option>
+                      <option>Grade 7</option><option>Grade 8</option><option>Grade 9</option>
+                      <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option>
+                    </select>
+                  </label>
+                  <label>
+                    Subject
+                    <input id="aSubject" required placeholder="e.g. Mathematics">
+                  </label>
+                </div>
+                <button class="primary-button submit-button" type="submit">Create Assessment</button>
+                <p id="createStatus" class="form-status" aria-live="polite"></p>
+              </form>
+            </div>
+          </div>
+
+          <!-- Assessment List -->
+          <div class="panel">
+            <div class="panel-head">
+              <h2>All Assessments</h2>
+              <button class="ghost-button" id="refreshListBtn" type="button" style="font-size:12px;">Refresh</button>
+            </div>
+            <div class="panel-body">
+              <div id="assessmentList" class="assessment-list">
+                <p style="color:var(--muted);font-size:13px;">Loading…</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column: add questions + stats -->
+        <div style="display:grid;gap:20px;">
+
+          <!-- Add Questions -->
+          <div class="panel" id="addQuestionsPanel">
+            <div class="panel-head">
+              <h2 id="addQuestionsTitle">Add Questions</h2>
+            </div>
+            <div class="panel-body">
+              <p style="color:var(--muted);font-size:13px;" id="addQuestionsHint">
+                Select an assessment from the list on the left to add questions.
+              </p>
+              <div id="addQuestionsForm" class="hidden">
+                <p style="margin:0 0 14px;font-size:13px;color:var(--muted);">
+                  Add up to 20 questions. Each question needs 4 options (A–D) and the correct answer.
+                </p>
+                <div id="questionBuilders"></div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+                  <button class="ghost-button" id="addQuestionBtn" type="button">+ Add Question</button>
+                  <span style="font-size:12px;color:var(--muted);align-self:center;" id="questionCountLabel">0 / 20 questions</span>
+                </div>
+                <button class="primary-button" id="saveQuestionsBtn" type="button">Save All Questions</button>
+                <p id="saveQuestionsStatus" class="form-status" aria-live="polite"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Panel -->
+          <div class="panel" id="statsPanel">
+            <div class="panel-head">
+              <h2 id="statsPanelTitle">Assessment Statistics</h2>
+            </div>
+            <div class="panel-body">
+              <p style="color:var(--muted);font-size:13px;" id="statsHint">
+                Select an assessment to view its statistics.
+              </p>
+              <div id="statsContent" class="hidden"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      // ── Utilities ──────────────────────────────────────────────────────────
+      let toastTimer;
+      function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => t.classList.remove("show"), 3400);
+      }
+
+      function escHtml(v) {
+        return String(v)
+          .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+          .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+      }
+
+      async function apiFetch(url, opts = {}) {
+        const res = await fetch(url, opts);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Request failed");
+        return data;
+      }
+
+      // ── Auth ───────────────────────────────────────────────────────────────
+      async function checkSession() {
+        try {
+          const data = await apiFetch("/api/admin/check-session");
+          if (data.authenticated) showDashboard();
+        } catch {}
+      }
+
+      function showDashboard() {
+        document.getElementById("loginGate").classList.add("hidden");
+        document.getElementById("adminDashboard").classList.remove("hidden");
+        loadAssessmentList();
+      }
+
+      document.getElementById("loginForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const status = document.getElementById("loginStatus");
+        status.textContent = "Logging in…";
+        status.style.color = "var(--muted)";
+        try {
+          await apiFetch("/api/admin/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email:    document.getElementById("loginEmail").value,
+              username: document.getElementById("loginUsername").value,
+              password: document.getElementById("loginPassword").value
+            })
+          });
+          status.textContent = "Login successful!";
+          status.style.color = "var(--green)";
+          showDashboard();
+        } catch (err) {
+          status.textContent = "Login failed: " + err.message;
+          status.style.color = "var(--red)";
+        }
+      });
+
+      document.getElementById("logoutBtn").addEventListener("click", async () => {
+        try { await apiFetch("/api/admin/logout", { method: "POST" }); } catch {}
+        document.getElementById("adminDashboard").classList.add("hidden");
+        document.getElementById("loginGate").classList.remove("hidden");
+        showToast("Logged out.");
+      });
+
+      // ── Assessment List ────────────────────────────────────────────────────
+      let selectedAssessmentId = null;
+
+      async function loadAssessmentList() {
+        const list = document.getElementById("assessmentList");
+        list.innerHTML = `<p style="color:var(--muted);font-size:13px;">Loading…</p>`;
+        try {
+          const data = await apiFetch("/api/admin/assessments");
+          const items = data.assessments || [];
+          if (items.length === 0) {
+            list.innerHTML = `<p style="color:var(--muted);font-size:13px;">No assessments yet. Create one above.</p>`;
+            return;
+          }
+          list.innerHTML = items.map(a => `
+            <div class="assessment-item" id="aitem-${a.id}">
+              <h3>${escHtml(a.title)}</h3>
+              <div class="assessment-item-meta">
+                <span class="badge badge-grade">${escHtml(a.grade)}</span>
+                <span class="badge badge-subject">${escHtml(a.subject)}</span>
+                <span class="badge badge-count">${a.question_count} question${a.question_count !== 1 ? "s" : ""}</span>
+                <span class="badge badge-attempts">${a.attempt_count} attempt${a.attempt_count !== 1 ? "s" : ""}</span>
+              </div>
+              <div class="item-actions">
+                <button class="primary-button" onclick="selectAssessment(${a.id}, '${escHtml(a.title).replace(/'/g,"\\'")}')">
+                  Add Questions
+                </button>
+                <button class="ghost-button" onclick="loadStats(${a.id}, '${escHtml(a.title).replace(/'/g,"\\'")}')">
+                  View Stats
+                </button>
+                <button class="secondary-button" onclick="deleteAssessment(${a.id})" style="color:var(--red);">
+                  Delete
+                </button>
+              </div>
+            </div>
+          `).join("");
+        } catch (err) {
+          list.innerHTML = `<p style="color:var(--red);font-size:13px;">Error: ${escHtml(err.message)}</p>`;
+        }
+      }
+
+      document.getElementById("refreshListBtn").addEventListener("click", loadAssessmentList);
+
+      // ── Create Assessment ──────────────────────────────────────────────────
+      document.getElementById("createAssessmentForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const status = document.getElementById("createStatus");
+        const btn = e.target.querySelector("button[type=submit]");
+        btn.disabled = true;
+        status.textContent = "Creating…";
+        status.style.color = "var(--muted)";
+        try {
+          const data = await apiFetch("/api/admin/assessments", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              title:   document.getElementById("aTitle").value.trim(),
+              grade:   document.getElementById("aGrade").value,
+              subject: document.getElementById("aSubject").value.trim()
+            })
+          });
+          status.textContent = `✓ Assessment "${data.assessment.title}" created (ID: ${data.assessment.id})`;
+          status.style.color = "var(--green)";
+          e.target.reset();
+          loadAssessmentList();
+          selectAssessment(data.assessment.id, data.assessment.title);
+        } catch (err) {
+          status.textContent = "Error: " + err.message;
+          status.style.color = "var(--red)";
+        } finally {
+          btn.disabled = false;
+        }
+      });
+
+      // ── Delete Assessment ──────────────────────────────────────────────────
+      async function deleteAssessment(id) {
+        if (!confirm("Delete this assessment and all its questions and responses? This cannot be undone.")) return;
+        try {
+          await apiFetch(`/api/admin/assessments/${id}`, { method: "DELETE" });
+          showToast("Assessment deleted.");
+          loadAssessmentList();
+          if (selectedAssessmentId === id) {
+            selectedAssessmentId = null;
+            document.getElementById("addQuestionsForm").classList.add("hidden");
+            document.getElementById("addQuestionsHint").classList.remove("hidden");
+            document.getElementById("addQuestionsTitle").textContent = "Add Questions";
+          }
+        } catch (err) {
+          showToast("Delete failed: " + err.message);
+        }
+      }
+
+      // ── Question Builder ───────────────────────────────────────────────────
+      let questionCount = 0;
+      const MAX_QUESTIONS = 20;
+
+      function selectAssessment(id, title) {
+        selectedAssessmentId = id;
+        document.getElementById("addQuestionsTitle").textContent = `Add Questions — ${title}`;
+        document.getElementById("addQuestionsHint").classList.add("hidden");
+        document.getElementById("addQuestionsForm").classList.remove("hidden");
+        document.getElementById("questionBuilders").innerHTML = "";
+        document.getElementById("saveQuestionsStatus").textContent = "";
+        questionCount = 0;
+        updateQuestionCount();
+        addQuestionBuilder(); // Start with one blank question
+        document.getElementById("addQuestionsPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      function addQuestionBuilder() {
+        if (questionCount >= MAX_QUESTIONS) {
+          showToast(`Maximum ${MAX_QUESTIONS} questions per assessment.`);
+          return;
+        }
+        questionCount++;
+        updateQuestionCount();
+        const container = document.getElementById("questionBuilders");
+        const qNum = questionCount;
+        const div = document.createElement("div");
+        div.className = "question-builder";
+        div.id = `qbuilder-${qNum}`;
+        div.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <h4 style="margin:0;">Question ${qNum}</h4>
+            <button type="button" class="secondary-button" style="font-size:11px;padding:4px 8px;"
+              onclick="removeQuestion(${qNum})">Remove</button>
+          </div>
+          <label>
+            Question Text
+            <textarea id="qt-${qNum}" rows="2" required placeholder="Enter the question…"></textarea>
+          </label>
+          <div class="options-2col" style="margin-top:10px;">
+            <label>Option A <input id="qa-${qNum}" required placeholder="Option A text"></label>
+            <label>Option B <input id="qb-${qNum}" required placeholder="Option B text"></label>
+            <label>Option C <input id="qc-${qNum}" required placeholder="Option C text"></label>
+            <label>Option D <input id="qd-${qNum}" required placeholder="Option D text"></label>
+          </div>
+          <div class="correct-select">
+            <label for="qcorr-${qNum}">Correct Answer:</label>
+            <select id="qcorr-${qNum}" required>
+              <option value="">Select…</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+            </select>
+          </div>
+        `;
+        container.appendChild(div);
+      }
+
+      function removeQuestion(qNum) {
+        const el = document.getElementById(`qbuilder-${qNum}`);
+        if (el) { el.remove(); questionCount--; updateQuestionCount(); }
+      }
+
+      function updateQuestionCount() {
+        document.getElementById("questionCountLabel").textContent = `${questionCount} / ${MAX_QUESTIONS} questions`;
+        document.getElementById("addQuestionBtn").disabled = questionCount >= MAX_QUESTIONS;
+      }
+
+      document.getElementById("addQuestionBtn").addEventListener("click", addQuestionBuilder);
+
+      document.getElementById("saveQuestionsBtn").addEventListener("click", async () => {
+        if (!selectedAssessmentId) return;
+        const status = document.getElementById("saveQuestionsStatus");
+        const btn = document.getElementById("saveQuestionsBtn");
+
+        // Collect all question builders
+        const builders = document.querySelectorAll(".question-builder");
+        const questions = [];
+        let valid = true;
+
+        builders.forEach((b) => {
+          const qNum = b.id.replace("qbuilder-", "");
+          const qt   = document.getElementById(`qt-${qNum}`)?.value.trim();
+          const qa   = document.getElementById(`qa-${qNum}`)?.value.trim();
+          const qb   = document.getElementById(`qb-${qNum}`)?.value.trim();
+          const qc   = document.getElementById(`qc-${qNum}`)?.value.trim();
+          const qd   = document.getElementById(`qd-${qNum}`)?.value.trim();
+          const corr = document.getElementById(`qcorr-${qNum}`)?.value;
+
+          if (!qt || !qa || !qb || !qc || !qd || !corr) {
+            valid = false;
+            b.style.borderColor = "var(--red)";
+          } else {
+            b.style.borderColor = "";
+            questions.push({
+              question_text: qt,
+              option_a: qa,
+              option_b: qb,
+              option_c: qc,
+              option_d: qd,
+              correct_answer: corr
+            });
+          }
+        });
+
+        if (!valid) {
+          status.textContent = "Please fill in all fields for every question.";
+          status.style.color = "var(--red)";
+          return;
+        }
+        if (questions.length === 0) {
+          status.textContent = "Add at least one question.";
+          status.style.color = "var(--red)";
+          return;
+        }
+
+        btn.disabled = true;
+        status.textContent = "Saving…";
+        status.style.color = "var(--muted)";
+
+        try {
+          const data = await apiFetch(`/api/admin/assessments/${selectedAssessmentId}/questions`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ questions })
+          });
+          status.textContent = `✓ ${data.inserted} question${data.inserted !== 1 ? "s" : ""} saved successfully.`;
+          status.style.color = "var(--green)";
+          showToast(`${data.inserted} questions saved!`);
+          loadAssessmentList();
+        } catch (err) {
+          status.textContent = "Error: " + err.message;
+          status.style.color = "var(--red)";
+        } finally {
+          btn.disabled = false;
+        }
+      });
+
+      // ── Stats ──────────────────────────────────────────────────────────────
+      async function loadStats(id, title) {
+        const content = document.getElementById("statsContent");
+        const hint    = document.getElementById("statsHint");
+        document.getElementById("statsPanelTitle").textContent = `Stats — ${title}`;
+        hint.classList.add("hidden");
+        content.classList.remove("hidden");
+        content.innerHTML = `<p style="color:var(--muted);font-size:13px;">Loading…</p>`;
+        document.getElementById("statsPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+
+        try {
+          const data = await apiFetch(`/api/admin/assessments/${id}/stats`);
+          const responses = data.responses || [];
+          content.innerHTML = `
+            <div class="stats-grid">
+              <div class="stat-box"><strong>${data.question_count}</strong><span>Questions</span></div>
+              <div class="stat-box"><strong>${data.total_attempts}</strong><span>Attempts</span></div>
+              <div class="stat-box"><strong>${data.average_percentage}%</strong><span>Avg Score</span></div>
+              <div class="stat-box"><strong>${data.highest_percentage}%</strong><span>Highest</span></div>
+              <div class="stat-box"><strong>${data.lowest_percentage}%</strong><span>Lowest</span></div>
+            </div>
+            ${responses.length === 0
+              ? `<p style="color:var(--muted);font-size:13px;">No attempts yet.</p>`
+              : `<div style="overflow-x:auto;">
+                  <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                    <thead>
+                      <tr style="background:#f4f8f9;">
+                        <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);">#</th>
+                        <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);">Score</th>
+                        <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);">%</th>
+                        <th style="padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${responses.map((r, i) => `
+                        <tr style="border-bottom:1px solid var(--line);">
+                          <td style="padding:8px 10px;">${i + 1}</td>
+                          <td style="padding:8px 10px;">${r.score} / ${r.total}</td>
+                          <td style="padding:8px 10px;font-weight:800;color:${Number(r.percentage) >= 50 ? "var(--green)" : "var(--red)"};">${r.percentage}%</td>
+                          <td style="padding:8px 10px;color:var(--muted);">${new Date(r.completed_at).toLocaleDateString("en-KE")}</td>
+                        </tr>
+                      `).join("")}
+                    </tbody>
+                  </table>
+                </div>`
+            }
+          `;
+        } catch (err) {
+          content.innerHTML = `<p style="color:var(--red);font-size:13px;">Error: ${escHtml(err.message)}</p>`;
+        }
+      }
+
+      // ── Init ───────────────────────────────────────────────────────────────
+      checkSession();
+    </script>
+  </body>
+</html>
