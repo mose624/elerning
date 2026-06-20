@@ -1,0 +1,15 @@
+{
+  "name": "cbe-elearning",
+  "version": "1.0.0",
+  "description": "CBE E-Learning Resources platform with online assessments",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "pg": "^8.13.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
